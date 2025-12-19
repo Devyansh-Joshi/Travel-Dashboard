@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:123Db456@localhost:5432/travel_dashboard?schema=public"
+}
+
+model City {
+  id               Int       @id @default(autoincrement())
+  name             String
+  country          String?
+  lat              Float
+  lon              Float
+  lastWeatherFetch DateTime?
+  airportCode      String? 
+
+  attractions  Attraction[]
+  weatherCache WeatherCache[]
+
+  // 🔧 FIXED relations
+  trips     Trip[] @relation("DestinationCity")
+  fromTrips Trip[] @relation("FromCity")
+
+  @@unique([name, country])
+}
+
+model Trip {
+  id String @id @default(uuid())
+
+  cityId Int
+  city   City @relation("DestinationCity", fields: [cityId], references: [id])
+
+  fromCityId Int
+  fromCity   City @relation("FromCity", fields: [fromCityId], references: [id])
+
+  startDate DateTime
+  endDate   DateTime
+  notes     String?
+  createdAt DateTime @default(now())
+}
+
+model WeatherCache {
+  id     Int      @id @default(autoincrement())
+  cityId Int
+  date   DateTime
+  data   Json
+  city   City     @relation(fields: [cityId], references: [id])
+
+  @@unique([cityId, date])
+}
+
+model Attraction {
+  id         Int     @id @default(autoincrement())
+  cityId     Int
+  name       String
+  category   String?
+  lat        Float?
+  lon        Float?
+  externalId String?
+  rating     Float?
+  data       Json?
+  city       City    @relation(fields: [cityId], references: [id])
+}
