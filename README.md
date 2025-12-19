@@ -123,9 +123,6 @@ GEOAPIFY_API_KEY=your_geoapify_key
 AMADEUS_CLIENT_ID=your_amadeus_client_id
 AMADEUS_CLIENT_SECRET=your_amadeus_client_secret
 
-
-⚠️ Do not commit the .env file
-
 4️⃣ Setup Database (Prisma)
 
 Make sure PostgreSQL is running locally.
@@ -133,7 +130,6 @@ Make sure PostgreSQL is running locally.
 cd backend
 npx prisma generate
 npx prisma migrate dev
-
 
 (Optional – open database UI)
 
@@ -143,7 +139,6 @@ npx prisma studio
 cd backend
 node src/index.js
 
-
 Backend runs on:
 
 http://localhost:4000
@@ -151,7 +146,6 @@ http://localhost:4000
 6️⃣ Start Frontend
 cd frontend
 npm run dev
-
 
 Frontend runs on:
 
